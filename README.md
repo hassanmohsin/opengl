@@ -10,5 +10,4 @@
 - `pip install pygame pyopengl`
 
 ## Run
-- `source .venv/bin/activate`
 - `python -m play.main`
