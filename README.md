@@ -1,4 +1,4 @@
-# OpenGL test for rendering 2D images from 3D objects
+# Rendering 2D images from 3D objects using OpenGL
 
 ## Installation
 **Conda**
@@ -10,5 +10,4 @@
 - `pip install pygame pyopengl`
 
 ## Run
-- `source .venv/bin/activate`
 - `python -m play.main`
