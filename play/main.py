@@ -170,6 +170,11 @@ if __name__ == '__main__':
     gluPerspective(60, (1.0 * display[0] / display[1]), 0.1, 50.0)
     glTranslatef(0.0, 0.0, -20)
 
+    # Take care of the hidden surface
+    glEnable(GL_DEPTH_TEST)
+    # glEnable(GL_CULL_FACE)
+    # glCullFace(GL_BACK)
+
     render_2d(window, cubes, '../images/test0.png')
 
     while True:
