@@ -168,7 +168,7 @@ if __name__ == '__main__':
     window = pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
     gluPerspective(60, (1.0 * display[0] / display[1]), 0.1, 50.0)
-    glTranslatef(0.0, 0.0, -20)
+    glTranslatef(0.0, 0.0, -50)
 
     # Take care of the hidden surface
     glEnable(GL_DEPTH_TEST)
@@ -179,7 +179,7 @@ if __name__ == '__main__':
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or event.type == K_ESCAPE:
                 pygame.quit()
                 quit()
 
