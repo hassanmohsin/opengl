@@ -85,10 +85,10 @@ class STL:
     def init_shadding(self):
         # solid model with a light / shading
         glShadeModel(GL_SMOOTH)
-        glClearColor(0.0, 0.0, 0.0, 0.0)
+        glClearColor(1, 1, 1, 0.7) # clear the color and set white as bg-color
+        glClear(GL_COLOR_BUFFER_BIT)
         glClearDepth(1.0)
         glEnable(GL_DEPTH_TEST)
-        glShadeModel(GL_SMOOTH)
         glDepthFunc(GL_LEQUAL)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
 
