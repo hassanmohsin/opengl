@@ -1,4 +1,4 @@
-# Rendering 3D models using PyOpenGL
+# Rendering 2D images from 3D objects using OpenGL
 
 ## Installation
 **Conda**
