@@ -89,7 +89,11 @@ class STL:
         glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
-        glLight(GL_LIGHT0, GL_POSITION, (0, 1, 1, 0))
+        # glLight(GL_LIGHT0, GL_POSITION, (0, 1, 1, 0))
+        glLight(GL_LIGHT0, GL_POSITION,  (0, 0, 1, 0))  # directional light from the front
+        glLight(GL_LIGHT0, GL_POSITION, (5, 5, 5, 1))  # point light from the left, top, front
+        glLight(GL_LIGHT0, GL_AMBIENT, (0, 0, 0, 1))
+        glLight(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
         glMatrixMode(GL_MODELVIEW)
 
 
