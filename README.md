@@ -10,4 +10,5 @@
 - `pip install pygame pyopengl`
 
 ## Run
-- `python -m play.main`
+- For a sample illustration of pyOpenGL: `python -m play.main`
+- For an example on how to load `.stl` files using pyOpenGL: `python -m play.load_stl`
