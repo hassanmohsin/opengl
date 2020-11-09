@@ -60,6 +60,34 @@ def mouse_move(event):
         lastPosX, lastPosY = x, y
 
 
+def find_mins_maxs(obj):
+    minx = obj.x.min()
+    maxx = obj.x.max()
+    miny = obj.y.min()
+    maxy = obj.y.max()
+    minz = obj.z.min()
+    maxz = obj.z.max()
+    return minx, maxx, miny, maxy, minz, maxz
+
+
+def translate(_solid, step, padding, multiplier, axis):
+    if 'x' == axis:
+        items = 0, 3, 6
+    elif 'y' == axis:
+        items = 1, 4, 7
+    elif 'z' == axis:
+        items = 2, 5, 8
+    else:
+        raise RuntimeError('Unknown axis %r, expected x, y or z' % axis)
+
+    # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
+    _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
+
+
+# TODO: add translation and rotation functionalities to the mesh objects
+# TODO: Make sure there is not volumetric intersection between the objects
+# TODO: Try to use a bounding box as a baggage volume
+
 class STL:
     def __init__(self, files, colors=None):
         self.files = files
@@ -67,6 +95,16 @@ class STL:
         self.meshes = [m.Mesh.from_file(file) for file in self.files]
         assert len(self.colors) == len(self.meshes)
         self.init_shadding()
+        self.change_orientation()
+
+    def change_orientation(self):
+        axes = ['x', 'y', 'z']
+        for i in range(1, len(self.meshes)):
+            minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(self.meshes[i - 1])
+            w1 = maxx - minx
+            l1 = maxy - miny
+            h1 = maxz - minz
+            translate(self.meshes[i], w1, w1 / 10., 1, axes[i % 3])
 
     def draw_all(self):
         for mesh, color in zip(self.meshes, self.colors):
@@ -85,7 +123,7 @@ class STL:
     def init_shadding(self):
         # solid model with a light / shading
         glShadeModel(GL_SMOOTH)
-        glClearColor(1, 1, 1, 0.7) # clear the color and set white as bg-color
+        glClearColor(1, 1, 1, 0.7)  # clear the color and set white as bg-color
         glClear(GL_COLOR_BUFFER_BIT)
         glClearDepth(1.0)
         glEnable(GL_DEPTH_TEST)
@@ -126,10 +164,11 @@ if __name__ == '__main__':
     file3 = "./samples/mouse.stl"
     file4 = "./samples/knife.stl"
     files = [file1, file2, file3, file4]
-    colors = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1]]
+    colors = {'green': [0.0, 0.7, 0.0], 'blue': [0.0, 0.0, 0.7]}
+    obj_colors = [colors['blue'], [0.0, 0.3, 0.0], [0.0, 0.1, 0.0], colors['blue']]
     # com = Combine([file1, file2, file3])
     # combined_object = com.combine()
-    stl = STL(files, colors)
+    stl = STL(files, obj_colors)
 
     while True:
         for event in pygame.event.get():
