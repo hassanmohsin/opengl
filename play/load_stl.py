@@ -104,7 +104,7 @@ class STL:
             w1 = maxx - minx
             l1 = maxy - miny
             h1 = maxz - minz
-            translate(self.meshes[i], w1, w1 / 10., 1, axes[i % 3])
+            translate(self.meshes[i], w1, w1 / 10., 2, axes[i % 3])
 
     def draw_all(self):
         for mesh, color in zip(self.meshes, self.colors):
@@ -164,7 +164,9 @@ if __name__ == '__main__':
     file3 = "./samples/mouse.stl"
     file4 = "./samples/knife.stl"
     files = [file1, file2, file3, file4]
-    colors = {'green': [0.0, 0.7, 0.0], 'blue': [0.0, 0.0, 0.7]}
+    # TODO: Add color schemes defined by a single value that represents the metallic-ness
+    # 0 -> 1 : Orange -> Green -> Blue
+    colors = {'green': [0.0, 0.7, 0.0], 'blue': [0.0, 51/255, 204/255]}
     obj_colors = [colors['blue'], [0.0, 0.3, 0.0], [0.0, 0.1, 0.0], colors['blue']]
     # com = Combine([file1, file2, file3])
     # combined_object = com.combine()
