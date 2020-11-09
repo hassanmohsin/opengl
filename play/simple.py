@@ -175,6 +175,11 @@ if __name__ == '__main__':
     # glEnable(GL_CULL_FACE)
     # glCullFace(GL_BACK)
 
+    # Take care of the hidden surface
+    glEnable(GL_DEPTH_TEST)
+    # glEnable(GL_CULL_FACE)
+    # glCullFace(GL_BACK)
+
     render_2d(window, cubes, '../images/test0.png')
 
     while True:
