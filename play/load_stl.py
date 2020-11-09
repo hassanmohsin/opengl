@@ -1,11 +1,10 @@
 import math
-from glob import glob
+
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from pygame.locals import *
-
-from .combine import Combine
+from stl import mesh as m
 
 # mouse pointer
 lastPosX = 0
@@ -62,14 +61,21 @@ def mouse_move(event):
 
 
 class STL:
-    def __init__(self, obj):
-        self.obj = obj
+    def __init__(self, files, colors=None):
+        self.files = files
+        self.colors = colors if colors else [0.5, 0.5, 0.5] * len(self.files)
+        self.meshes = [m.Mesh.from_file(file) for file in self.files]
+        assert len(self.colors) == len(self.meshes)
         self.init_shadding()
 
-    def draw(self):
+    def draw_all(self):
+        for mesh, color in zip(self.meshes, self.colors):
+            self.draw(mesh, color)
+
+    def draw(self, obj, color):
         glBegin(GL_TRIANGLES)
-        for vector, normal in zip(self.obj.vectors, self.obj.normals):
-            glColor3f(0, 0.3, 0.8)
+        for vector, normal in zip(obj.vectors, obj.normals):
+            glColor3f(*color)
             glNormal3f(normal[0], normal[1], normal[2])
             glVertex3f(vector[0][0], vector[0][1], vector[0][2])
             glVertex3f(vector[1][0], vector[1][1], vector[1][2])
@@ -90,7 +96,7 @@ class STL:
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
         # glLight(GL_LIGHT0, GL_POSITION, (0, 1, 1, 0))
-        glLight(GL_LIGHT0, GL_POSITION,  (0, 0, 1, 0))  # directional light from the front
+        glLight(GL_LIGHT0, GL_POSITION, (0, 0, 1, 0))  # directional light from the front
         glLight(GL_LIGHT0, GL_POSITION, (5, 5, 5, 1))  # point light from the left, top, front
         glLight(GL_LIGHT0, GL_AMBIENT, (0, 0, 0, 1))
         glLight(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
@@ -119,9 +125,11 @@ if __name__ == '__main__':
     file2 = "./samples/door_handle.stl"
     file3 = "./samples/mouse.stl"
     file4 = "./samples/knife.stl"
-    com = Combine([file1, file2, file3])
-    combined_object = com.combine()
-    stl = STL(combined_object)
+    files = [file1, file2, file3, file4]
+    colors = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1]]
+    # com = Combine([file1, file2, file3])
+    # combined_object = com.combine()
+    stl = STL(files, colors)
 
     while True:
         for event in pygame.event.get():
@@ -135,6 +143,6 @@ if __name__ == '__main__':
             mouse_move(event)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        stl.draw()
+        stl.draw_all()
         pygame.display.flip()
         # pygame.time.wait(1)
